@@ -22,7 +22,7 @@ const startClock = (second = 55, minute = 59, hour = 11) => {
     second = secondGenerator.next().value;
     minute = minuteGenerator.next().value;
     hour = hourGenerator.next().value;
-
+    
     setInterval (() => {
         if (minute === 59 && second === 59) {
             hour = hourGenerator.next().value;
@@ -40,10 +40,9 @@ const startClock = (second = 55, minute = 59, hour = 11) => {
 
 const getCurrentTime = () => {
     const now = new Date();
-    const hour = now.toLocaleString('en-US', { hour: 'numeric', hour12: true }).split(' ')[0];
+    const hour = (now.getHours() + 24) % 12 || 0;
     const minute = now.getMinutes();
     const second = now.getSeconds();
-
     return {hour, minute, second};
 }
 
