@@ -1,9 +1,9 @@
-function* timeGenerator(initValue = 0, max = 60) {
+function* timeGenerator(start, initValue = 0, max = 60) {
     let time = initValue;
     while(time < max) {
         yield time++;
         if(time === max) {
-            time = 0;
+            time = start;
         }
     }
 }
@@ -15,9 +15,9 @@ const renderClock = (val) => {
 }
 
 const startClock = (second = 55, minute = 59, hour = 11) => {
-    const secondGenerator = timeGenerator(second, 60);
-    const minuteGenerator = timeGenerator(minute, 60);
-    const hourGenerator = timeGenerator(hour, 12);
+    const secondGenerator = timeGenerator(0, second, 60);
+    const minuteGenerator = timeGenerator(0, minute, 60);
+    const hourGenerator = timeGenerator(1, hour, 13);
 
     second = secondGenerator.next().value;
     minute = minuteGenerator.next().value;
@@ -40,7 +40,7 @@ const startClock = (second = 55, minute = 59, hour = 11) => {
 
 const getCurrentTime = () => {
     const now = new Date();
-    const hour = (now.getHours() + 24) % 12 || 0;
+    const hour = (now.getHours() + 24) % 12 || 12;
     const minute = now.getMinutes();
     const second = now.getSeconds();
     return {hour, minute, second};
